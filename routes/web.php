@@ -7,8 +7,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Öffentliche Seite (Slug-Route)
-Route::get('pages/{slug}', [\App\Http\Controllers\PageController::class, 'show'])->name('pages.show');
 
 // GESCHÜTZTE Admin-Seiten (NUR mit Login!)
 Route::middleware('auth')->group(function () {
@@ -18,6 +16,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Öffentliche Seite (Slug-Route)
+Route::get('pages/{slug}', [\App\Http\Controllers\PageController::class, 'show'])->name('pages.show');
+
 
 // Dashboard
 Route::get('/dashboard', function () {
