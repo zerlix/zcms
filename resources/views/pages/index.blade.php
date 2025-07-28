@@ -21,8 +21,13 @@
                     <td>{{ $page->slug }}</td>
                     <td>{{ $page->is_published ? 'Ja' : 'Nein' }}</td>
                     <td>
-                        <a href="{{ route('pages.show', $page) }}">Anzeigen</a> |
-                        <a href="{{ route('pages.edit', $page) }}">Bearbeiten</a>
+                        <a href="{{ route('pages.show', $page->slug) }}">Anzeigen</a> |
+                        <a href="{{ route('pages.edit', $page) }}">Bearbeiten</a> |
+                        <form action="{{ route('pages.destroy', $page) }}" method="POST" style="display:inline" onsubmit="return confirm('Wirklich löschen?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" style="background:none;border:none;color:red;cursor:pointer;">Löschen</button>
+                        </form>
                     </td>
                 </tr>
             @endforeach

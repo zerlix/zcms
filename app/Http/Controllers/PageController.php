@@ -44,9 +44,9 @@ class PageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $slug)
     {
-        $page = \App\Models\Page::findOrFail($id);
+        $page = \App\Models\Page::where('slug', $slug)->firstOrFail();
         return view('pages.show', compact('page'));
     }
 
@@ -83,6 +83,8 @@ class PageController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $page = \App\Models\Page::findOrFail($id);
+        $page->delete();
+        return redirect()->route('pages.index')->with('success', 'Seite erfolgreich gelöscht!');
     }
 }
