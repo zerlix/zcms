@@ -46,7 +46,8 @@ class PageController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $page = \App\Models\Page::findOrFail($id);
+        return view('pages.show', compact('page'));
     }
 
     /**
@@ -54,7 +55,8 @@ class PageController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $page = \App\Models\Page::findOrFail($id);
+        return view('pages.edit', compact('page'));
     }
 
     /**
@@ -62,7 +64,18 @@ class PageController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $page = \App\Models\Page::findOrFail($id);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:pages,slug,' . $page->id,
+            'content' => 'required|string',
+            'is_published' => 'nullable|boolean',
+        ]);
+
+        $validated['is_published'] = $request->has('is_published');
+        $page->update($validated);
+        return redirect()->route('pages.show', $page)->with('success', 'Seite erfolgreich aktualisiert!');
     }
 
     /**
